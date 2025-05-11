@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 16.4.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "prebuildCommand": "echo \"Debugging gradlew issue\" && ls -la ./android && chmod +x ./android/gradlew",
+      "env": {
+        "NPM_FLAGS": "--legacy-peer-deps"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "prebuildCommand": "echo \"Debugging gradlew issue\" && ls -la ./android && chmod +x ./android/gradlew",
+      "env": {
+        "NPM_FLAGS": "--legacy-peer-deps"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "channel": "production",
+      "prebuildCommand": "echo \"Debugging gradlew issue\" && ls -la ./android && chmod +x ./android/gradlew",
+      "env": {
+        "NPM_FLAGS": "--legacy-peer-deps"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
