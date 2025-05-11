@@ -54,3 +54,6 @@ android/build
 android/app/build
 ios/build
 ios/Pods
+
+# EAS credentials
+credentials.json
