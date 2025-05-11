@@ -27,9 +27,6 @@
       "prebuildCommand": "echo \"Debugging gradlew issue (prebuild cmd modified)\" && chmod +x ./android/gradlew",
       "env": {
         "NPM_FLAGS": "--legacy-peer-deps"
-      },
-      "android": {
-        "credentialsSource": "local"
       }
     }
   },
