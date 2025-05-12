@@ -624,11 +624,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   categoryActions: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    padding: 5,
+    marginRight: 10,
   },
   statusSwitch: {
     transform: [{ scale: 0.8 }],
+    marginRight: 5,
   },
   
   // Modal Styles
