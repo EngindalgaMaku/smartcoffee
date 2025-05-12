@@ -18,7 +18,6 @@ import {
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { supabase } from '../supabaseClient';
 import * as ImagePicker from 'expo-image-picker';
-import { decode } from 'base64-arraybuffer';
 
 const CategoriesScreen = ({ branchId }) => {
   const [categories, setCategories] = useState([]);
@@ -136,26 +135,30 @@ const CategoriesScreen = ({ branchId }) => {
 
   // Resmi yükle ve URL al
   const uploadImageAndGetUrl = async () => {
-    if (!uploadedImage || !uploadedImage.base64) return null;
-    
+    if (!uploadedImage || !uploadedImage.uri) return null;
+
     try {
       const fileName = `category_${Date.now()}.jpg`;
       const filePath = `categories/${fileName}`;
-      
+
+      // Dosyayı blob olarak al
+      const response = await fetch(uploadedImage.uri);
+      const blob = await response.blob();
+
       const { error: uploadError } = await supabase.storage
         .from('category-images')
-        .upload(filePath, decode(uploadedImage.base64), {
+        .upload(filePath, blob, {
           contentType: 'image/jpeg',
           upsert: true
         });
-        
+
       if (uploadError) throw uploadError;
-      
+
       // Public URL oluştur
       const { data } = supabase.storage
         .from('category-images')
         .getPublicUrl(filePath);
-        
+
       return data.publicUrl;
     } catch (error) {
       console.error('Resim yüklenirken hata:', error);

@@ -19,7 +19,6 @@ import {
 import { supabase } from '../supabaseClient';
 import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { decode } from 'base64-arraybuffer';
 
 // Ekran boyutlarını alıyoruz
 const { width, height } = Dimensions.get('window');
@@ -289,7 +288,6 @@ const ProductsScreen = ({ branchId }) => {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
-      base64: true,
     });
     
     if (!result.canceled && result.assets && result.assets[0]) {
@@ -300,26 +298,30 @@ const ProductsScreen = ({ branchId }) => {
 
   // Resmi yükle ve URL al
   const uploadImageAndGetUrl = async () => {
-    if (!uploadedImage || !uploadedImage.base64) return null;
-    
+    if (!uploadedImage || !uploadedImage.uri) return null;
+
     try {
       const fileName = `product_${Date.now()}.jpg`;
       const filePath = `products/${fileName}`;
-      
+
+      // Dosyayı blob olarak al
+      const response = await fetch(uploadedImage.uri);
+      const blob = await response.blob();
+
       const { error: uploadError } = await supabase.storage
         .from('product-images')
-        .upload(filePath, decode(uploadedImage.base64), {
+        .upload(filePath, blob, {
           contentType: 'image/jpeg',
           upsert: true
         });
-        
+
       if (uploadError) throw uploadError;
-      
+
       // Public URL oluştur
       const { data } = supabase.storage
         .from('product-images')
         .getPublicUrl(filePath);
-        
+
       return data.publicUrl;
     } catch (error) {
       console.error('Resim yüklenirken hata:', error);

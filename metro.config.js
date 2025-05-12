@@ -14,8 +14,6 @@ config.resolver.extraNodeModules = {
   https: require.resolve('react-native-http'),
   crypto: path.join(__dirname, 'crypto-mock.js'),
   zlib: path.join(__dirname, 'zlib-mock.js'),
-  net: require.resolve('react-native-tcp-socket'),
-  tls: require.resolve('react-native-tcp-socket'),
   url: require.resolve('react-native-url-polyfill')
 };
 
